@@ -11,29 +11,16 @@
       </div>
     </div>
 
-    <div class="sponsor">
-      <p class="sponsor__label">Sponsorisé par PAGR</p>
-      <svg class="sponsor__logo" viewBox="0 0 340 210" role="img" aria-label="Agrial">
-        <path
-          fill="#ee9a26"
-          d="M150 122 L172 104 L176 108 L182 96 L186 100 L192 88 L196 92 L201 80 L205 84 L208 70 L211 58 L213 46 L214 34 L215 46 L217 58 L219 70 L222 68 L225 78 L229 76 L233 88 L238 86 L243 97 L249 95 L254 106 L261 104 L266 113 L275 111 L282 118 L288 122 Z"
-        />
-        <path
-          fill="#1a7a3e"
-          d="M25 152 C90 150 130 150 165 146 C205 141 250 135 315 140 L315 149 C250 144 205 150 165 155 C130 159 90 159 25 161 Z"
-        />
-        <text
-          x="170" y="196" text-anchor="middle"
-          font-family="'Times New Roman', Georgia, serif"
-          font-size="52" font-weight="700" letter-spacing="2" fill="#176e39"
-        >AGRIAL</text>
-      </svg>
-    </div>
+    <a class="sponsor" href="https://noknok.dev/recette/" target="_blank" rel="noopener">
+      <span class="sponsor__label">Sponsorisé par PAGR</span>
+      <img class="sponsor__logo" :src="logoAgrial" alt="Agrial" />
+    </a>
   </div>
 </template>
 
 <script setup>
 import { RouterLink } from 'vue-router'
+import logoAgrial from '../images/Logo_cooperative_Agrial.jpg'
 </script>
 
 <style scoped>
@@ -69,24 +56,30 @@ import { RouterLink } from 'vue-router'
   right: 22px;
   bottom: 22px;
   z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   background: #ffffff;
   border-radius: 6px;
-  padding: 12px 18px 10px;
+  padding: 9px 14px;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
-  text-align: center;
+  text-decoration: none;
+  transition: transform 0.12s, box-shadow 0.2s;
 }
+.sponsor:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38); }
 .sponsor__label {
-  margin: 0 0 6px;
   font-family: var(--font);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.62rem;
+  letter-spacing: 0.8px;
+  font-size: 0.6rem;
+  line-height: 1.3;
   color: #5a6472;
+  max-width: 78px;
 }
-.sponsor__logo { display: block; width: 138px; height: auto; }
+.sponsor__logo { display: block; width: 62px; height: auto; }
 @media (max-width: 620px) {
-  .sponsor { right: 14px; bottom: 14px; padding: 9px 13px 7px; }
-  .sponsor__logo { width: 104px; }
+  .sponsor { right: 14px; bottom: 14px; gap: 9px; padding: 7px 11px; }
+  .sponsor__logo { width: 50px; }
 }
 </style>
