@@ -30,16 +30,16 @@ const critique = computed(() => props.remaining <= 5)
 <style scoped>
 .timer { position: relative; width: 110px; height: 110px; }
 svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-.piste { fill: none; stroke: rgba(255, 255, 255, 0.10); stroke-width: 8; }
+.piste { fill: none; stroke: rgba(150, 185, 255, 0.14); stroke-width: 8; }
 .jauge {
   fill: none;
-  stroke: var(--vert);
+  stroke: var(--or);
   stroke-width: 8;
   stroke-linecap: round;
   transition: stroke-dashoffset 0.2s linear, stroke 0.3s ease;
-  filter: drop-shadow(0 0 6px rgba(120, 190, 32, 0.6));
+  filter: drop-shadow(0 0 6px rgba(255, 207, 71, 0.6));
 }
-.timer.critique .jauge { stroke: var(--rouge); filter: drop-shadow(0 0 8px rgba(229, 72, 77, 0.7)); }
+.timer.critique .jauge { stroke: var(--rouge); filter: drop-shadow(0 0 8px rgba(255, 77, 85, 0.7)); }
 .valeur {
   position: absolute;
   inset: 0;

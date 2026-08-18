@@ -14,11 +14,9 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// Amorce la base au démarrage si elle est vide.
 const seeded = seedIfEmpty()
 if (seeded > 0) console.log(`[QTiers] Base amorcée avec ${seeded} questions.`)
 
-// --- Validation d'une question ---
 function validerQuestion(body) {
   const erreurs = []
   if (!body || typeof body.question !== 'string' || !body.question.trim()) {
@@ -87,7 +85,6 @@ router.delete('/questions/:id', (req, res) => {
 
 app.use('/api', router)
 
-// --- Sert le front buildé (client/dist) en production, avec fallback SPA ---
 const distDir = join(__dirname, '..', 'client', 'dist')
 if (existsSync(join(distDir, 'index.html'))) {
   app.use(express.static(distDir))

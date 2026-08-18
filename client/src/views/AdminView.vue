@@ -1,15 +1,14 @@
 <template>
   <div class="container admin">
     <header class="barre">
-      <RouterLink to="/" class="btn btn--ghost btn--sm">← Accueil</RouterLink>
-      <span class="titre-plateau logo-mini">Gestion des questions</span>
-      <RouterLink to="/jouer" class="btn btn--ghost btn--sm">Jouer ▶</RouterLink>
+      <RouterLink to="/" class="btn btn--ghost btn--sm">Accueil</RouterLink>
+      <span class="logo-mini">Gestion des questions</span>
+      <RouterLink to="/jouer" class="btn btn--ghost btn--sm">Jouer</RouterLink>
     </header>
 
     <div class="grille">
-      <!-- Formulaire -->
       <section class="panneau form">
-        <h2 class="titre-plateau">{{ form.id ? 'Modifier' : 'Nouvelle question' }}</h2>
+        <h2 class="titre-or">{{ form.id ? 'Modifier' : 'Nouvelle question' }}</h2>
 
         <div class="ligne">
           <div class="col">
@@ -50,10 +49,9 @@
         </div>
       </section>
 
-      <!-- Liste -->
       <section class="liste">
         <div class="liste-tete">
-          <h2 class="titre-plateau">Questions <span class="badge">{{ questions.length }}</span></h2>
+          <h2 class="titre-or">Questions <span class="badge">{{ questions.length }}</span></h2>
         </div>
 
         <p v-if="chargement" class="muted">Chargement…</p>
@@ -143,10 +141,10 @@ async function enregistrer() {
     }
     if (form.id) {
       await api.modifier(form.id, payload)
-      succes.value = 'Question modifiée ✔'
+      succes.value = 'Question modifiée'
     } else {
       await api.creer(payload)
-      succes.value = 'Question ajoutée ✔'
+      succes.value = 'Question ajoutée'
     }
     reinitialiser()
     await charger()
@@ -175,7 +173,13 @@ onMounted(charger)
 .admin { min-height: 100vh; }
 .barre { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
 .barre .btn { text-decoration: none; }
-.logo-mini { font-size: 1.1rem; letter-spacing: 2px; }
+.logo-mini {
+  font-family: var(--font-titre);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 1rem;
+  color: var(--bleu-clair);
+}
 
 .grille { display: grid; grid-template-columns: minmax(320px, 420px) 1fr; gap: 22px; align-items: start; }
 @media (max-width: 860px) { .grille { grid-template-columns: 1fr; } }
@@ -188,16 +192,16 @@ onMounted(charger)
 textarea.champ { resize: vertical; font-family: var(--font-texte); }
 
 .rep-ligne { display: flex; align-items: center; gap: 10px; }
-.radio { accent-color: var(--vert); width: 18px; height: 18px; flex: none; }
+.radio { accent-color: var(--or); width: 18px; height: 18px; flex: none; }
 .pastille {
   flex: none; width: 30px; height: 30px; display: grid; place-items: center;
-  border-radius: 50%; font-family: var(--font-titre); background: rgba(255, 255, 255, 0.08); color: var(--texte-doux);
+  border-radius: 50%; font-family: var(--font-titre); font-weight: 600; background: rgba(255, 255, 255, 0.08); color: var(--texte-doux);
 }
-.pastille.ok { background: linear-gradient(180deg, var(--vert-clair), var(--vert)); color: #05210f; }
+.pastille.ok { background: linear-gradient(180deg, var(--or-clair), var(--or)); color: #2a1c02; }
 
 .actions { display: flex; gap: 12px; margin-top: 6px; }
 .erreur { color: #ffb3b3; margin: 2px 0; }
-.succes { color: var(--vert-clair); margin: 2px 0; }
+.succes { color: var(--or-clair); margin: 2px 0; }
 
 .liste-tete h2 { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .muted { color: var(--texte-doux); }
@@ -207,7 +211,7 @@ textarea.champ { resize: vertical; font-family: var(--font-texte); }
 .q-texte { font-family: var(--font-titre); font-size: 1.15rem; margin: 0 0 10px; }
 .q-reps { list-style: none; padding: 0; margin: 0 0 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 14px; }
 .q-reps li { color: var(--texte-doux); font-size: 0.92rem; }
-.q-reps li.bonne { color: var(--vert-clair); font-weight: 600; }
+.q-reps li.bonne { color: var(--or-clair); font-weight: 600; }
 @media (max-width: 520px) { .q-reps { grid-template-columns: 1fr; } }
 .carte-actions { display: flex; gap: 10px; }
 </style>

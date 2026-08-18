@@ -1,38 +1,33 @@
 <template>
   <div class="container jeu">
-    <!-- Barre du haut -->
     <header class="barre">
-      <RouterLink to="/" class="btn btn--ghost btn--sm">← Accueil</RouterLink>
-      <span class="titre-plateau logo-mini">Question pour un Tiers</span>
-      <button class="btn btn--ghost btn--sm" @click="basculerSon">{{ sonActif ? '🔊' : '🔇' }}</button>
+      <RouterLink to="/" class="btn btn--ghost btn--sm">Accueil</RouterLink>
+      <span class="logo-mini">Question pour un Tiers</span>
+      <button class="btn btn--ghost btn--sm" @click="basculerSon">{{ sonActif ? 'Son on' : 'Son off' }}</button>
     </header>
 
-    <!-- Chargement -->
     <div v-if="etat === 'chargement'" class="centre panneau bloc">
       <p>Chargement des questions…</p>
     </div>
 
-    <!-- Aucune question -->
     <div v-else-if="etat === 'vide'" class="centre panneau bloc">
-      <h2>Aucune question 😕</h2>
+      <h2 class="titre-or">Aucune question</h2>
       <p>La base est vide. Ajoute des questions pour lancer une partie.</p>
       <RouterLink to="/admin" class="btn btn--or">Ajouter des questions</RouterLink>
     </div>
 
-    <!-- Intro -->
     <div v-else-if="etat === 'pret'" class="centre panneau bloc">
       <span class="badge">{{ questions.length }} questions · {{ DUREE }}s chacune</span>
-      <h2 class="titre-plateau gros">Prêt&nbsp;?</h2>
+      <h2 class="titre-or gros">Prêt&nbsp;?</h2>
       <p>Une bonne réponse rapporte d'autant plus de points que tu réponds vite. À toi de jouer&nbsp;!</p>
-      <button class="btn btn--or" @click="demarrer">C'est parti ▶</button>
+      <button class="btn btn--or" @click="demarrer">C'est parti</button>
     </div>
 
-    <!-- Jeu -->
     <div v-else-if="etat === 'jeu'" class="plateau">
       <div class="hud">
         <div class="hud__gauche">
           <span class="badge">Question {{ index + 1 }} / {{ questions.length }}</span>
-          <span class="badge badge--cat">{{ questionCourante.categorie }}</span>
+          <span class="badge badge--or">{{ questionCourante.categorie }}</span>
         </div>
         <div class="score">Score <strong>{{ score }}</strong></div>
       </div>
@@ -57,10 +52,9 @@
       </div>
     </div>
 
-    <!-- Résultat -->
     <div v-else-if="etat === 'resultat'" class="centre panneau bloc">
       <span class="badge">Terminé</span>
-      <h2 class="titre-plateau gros">{{ mention }}</h2>
+      <h2 class="titre-or gros">{{ mention }}</h2>
       <div class="score-final">{{ score }} <small>points</small></div>
       <p>{{ bonnes }} / {{ questions.length }} bonnes réponses</p>
       <div class="actions">
@@ -82,14 +76,14 @@ const LETTRES = ['A', 'B', 'C', 'D']
 const DUREE = 20
 const NB_QUESTIONS = 10
 
-const etat = ref('chargement') // chargement | vide | pret | jeu | resultat
+const etat = ref('chargement')
 const questions = ref([])
 const index = ref(0)
 const score = ref(0)
 const bonnes = ref(0)
 const tempsRestant = ref(DUREE)
-const propositions = ref([]) // [{ text, correct }]
-const choix = ref(null) // index proposition choisie
+const propositions = ref([])
+const choix = ref(null)
 const revele = ref(false)
 const sonActif = ref(son.estActif())
 
@@ -100,7 +94,7 @@ let dernierTic = DUREE
 const questionCourante = computed(() => questions.value[index.value] || {})
 const mention = computed(() => {
   const ratio = questions.value.length ? bonnes.value / questions.value.length : 0
-  if (ratio === 1) return 'Champion des tiers ! 🏆'
+  if (ratio === 1) return 'Champion des tiers !'
   if (ratio >= 0.7) return 'Excellent !'
   if (ratio >= 0.4) return 'Pas mal !'
   return 'Peut mieux faire…'
@@ -216,25 +210,30 @@ onBeforeUnmount(() => {
 .jeu { min-height: 100vh; }
 .barre { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 .barre .btn { text-decoration: none; }
-.logo-mini { font-size: 1.1rem; letter-spacing: 2px; }
+.logo-mini {
+  font-family: var(--font-titre);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 1rem;
+  color: var(--bleu-clair);
+}
 
 .centre { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .bloc { padding: 40px 28px; margin: 8vh auto 0; max-width: 560px; }
 .bloc .btn { text-decoration: none; }
 .gros { font-size: clamp(2.4rem, 8vw, 4rem); }
 
-/* Plateau de jeu */
 .hud { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
 .hud__gauche { display: flex; gap: 10px; flex-wrap: wrap; }
-.badge--cat { background: rgba(237, 200, 115, 0.14); border-color: rgba(237, 200, 115, 0.3); color: var(--or-clair); }
 .score { font-family: var(--font-titre); text-transform: uppercase; letter-spacing: 1px; color: var(--texte-doux); }
-.score strong { color: var(--vert-clair); font-size: 1.5rem; margin-left: 6px; }
+.score strong { color: var(--or); font-size: 1.5rem; margin-left: 6px; }
 
 .scene { display: flex; align-items: center; gap: 22px; margin-bottom: 26px; }
 .question {
   flex: 1;
   padding: 26px 28px;
   font-family: var(--font-titre);
+  font-weight: 500;
   font-size: clamp(1.3rem, 3.2vw, 2rem);
   line-height: 1.2;
 }
@@ -249,15 +248,15 @@ onBeforeUnmount(() => {
   gap: 14px;
   text-align: left;
   padding: 16px 18px;
-  border-radius: 14px;
+  border-radius: 12px;
   border: 1px solid var(--bord);
-  background: rgba(6, 24, 15, 0.72);
-  color: var(--texte);
+  background: rgba(8, 18, 54, 0.72);
+  color: var(--blanc);
   font-size: 1.05rem;
   cursor: pointer;
   transition: transform 0.12s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
 }
-.reponse:not(:disabled):hover { transform: translateY(-2px); border-color: var(--vert); box-shadow: var(--ombre-vert); }
+.reponse:not(:disabled):hover { transform: translateY(-2px); border-color: var(--bleu-vif); box-shadow: var(--lueur-bleue); }
 .reponse:disabled { cursor: default; }
 .lettre {
   flex: none;
@@ -265,17 +264,18 @@ onBeforeUnmount(() => {
   display: grid; place-items: center;
   border-radius: 50%;
   font-family: var(--font-titre);
+  font-weight: 600;
   font-size: 1.2rem;
   background: linear-gradient(180deg, var(--or-clair), var(--or));
   color: #2a1c02;
 }
-.reponse--bonne { border-color: var(--vert); background: rgba(120, 190, 32, 0.22); box-shadow: 0 0 26px rgba(120, 190, 32, 0.4); }
-.reponse--bonne .lettre { background: linear-gradient(180deg, var(--vert-clair), var(--vert)); color: #05210f; }
-.reponse--mauvaise { border-color: var(--rouge); background: rgba(229, 72, 77, 0.2); }
+.reponse--bonne { border-color: var(--or); background: rgba(255, 207, 71, 0.18); box-shadow: 0 0 26px rgba(255, 207, 71, 0.4); }
+.reponse--bonne .lettre { background: linear-gradient(180deg, #fff2c2, var(--or)); color: #2a1c02; }
+.reponse--mauvaise { border-color: var(--rouge); background: rgba(255, 77, 85, 0.2); }
 .reponse--mauvaise .lettre { background: linear-gradient(180deg, #ff9a9c, var(--rouge)); color: #fff; }
 .reponse--eteinte { opacity: 0.45; }
 
-.score-final { font-family: var(--font-titre); font-size: 4rem; color: var(--vert-clair); line-height: 1; }
+.score-final { font-family: var(--font-titre); font-weight: 700; font-size: 4rem; color: var(--or); line-height: 1; }
 .score-final small { font-size: 1.2rem; color: var(--texte-doux); }
 .actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 </style>

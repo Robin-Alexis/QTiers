@@ -1,5 +1,3 @@
-// Petits effets sonores synthétisés (WebAudio) — pas de fichiers à embarquer.
-// L'ambiance "plateau" sans dépendance externe.
 let ctx = null
 let active = true
 

@@ -5,7 +5,6 @@ import { SEED_QUESTIONS } from './seed-data.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-// Chemin de la base : configurable via QTIERS_DB, sinon fichier local au serveur.
 const DB_PATH = process.env.QTIERS_DB || join(__dirname, 'qtiers.db')
 
 const db = new Database(DB_PATH)
@@ -26,10 +25,6 @@ db.exec(`
   );
 `)
 
-/**
- * Insère les questions de démonstration si la table est vide.
- * @returns {number} nombre de questions insérées
- */
 export function seedIfEmpty() {
   const { total } = db.prepare('SELECT COUNT(*) AS total FROM questions').get()
   if (total > 0) return 0
@@ -56,7 +51,6 @@ export function seedIfEmpty() {
   return SEED_QUESTIONS.length
 }
 
-// --- Helpers de mapping ---
 function rowToQuestion(row) {
   if (!row) return null
   return {
@@ -70,7 +64,6 @@ function rowToQuestion(row) {
   }
 }
 
-// --- CRUD ---
 export function listQuestions() {
   return db.prepare('SELECT * FROM questions ORDER BY id DESC').all().map(rowToQuestion)
 }

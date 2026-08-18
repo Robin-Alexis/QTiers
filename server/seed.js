@@ -1,4 +1,3 @@
-// Amorce manuelle de la base : `npm run seed` (n'insère que si la base est vide).
 import { seedIfEmpty, countQuestions } from './db.js'
 
 const inserted = seedIfEmpty()

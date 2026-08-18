@@ -1,22 +1,21 @@
 <template>
   <div class="accueil">
-    <div class="anneaux" aria-hidden="true">
-      <span></span><span></span><span></span><span></span>
+    <div class="faisceaux" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
     </div>
+    <div class="rubans" aria-hidden="true"></div>
 
     <div class="hero">
-      <p class="surtitre titre-plateau">Question&nbsp;pour&nbsp;un</p>
-      <h1 class="titre titre-plateau">TIERS</h1>
-      <p class="slogan">Le grand quiz — aux couleurs d'Agrial 🌱</p>
+      <p class="ligne-haut"><span class="mot-argent">Question</span></p>
+      <p class="ligne-milieu">pour un</p>
+      <h1 class="ligne-bas"><span class="mot-script">Tiers</span></h1>
+
+      <p class="slogan">Le grand quiz de culture générale</p>
 
       <div class="actions">
-        <RouterLink to="/jouer" class="btn btn--or">▶ Jouer</RouterLink>
+        <RouterLink to="/jouer" class="btn btn--or">Jouer</RouterLink>
         <RouterLink to="/admin" class="btn btn--ghost">Gérer les questions</RouterLink>
       </div>
-
-      <p class="note">
-        Prêt à devenir le champion des tiers&nbsp;? Réponds vite, marque un maximum de points.
-      </p>
     </div>
   </div>
 </template>
@@ -34,30 +33,65 @@ import { RouterLink } from 'vue-router'
   padding: 24px;
   overflow: hidden;
 }
-.hero { position: relative; z-index: 2; text-align: center; }
-.surtitre { font-size: clamp(1.2rem, 4vw, 2.2rem); font-weight: 500; letter-spacing: 6px; margin-bottom: -0.2em; }
-.titre {
-  font-size: clamp(4.5rem, 20vw, 12rem);
-  letter-spacing: 6px;
-  line-height: 0.9;
+
+.faisceaux { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.faisceaux span {
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  width: 34vw;
+  height: 160%;
+  transform-origin: top center;
+  background: linear-gradient(180deg, rgba(140, 175, 255, 0.24), transparent 62%);
+  filter: blur(14px);
+  opacity: 0.7;
 }
-.slogan { color: var(--texte-doux); font-size: clamp(0.95rem, 2.5vw, 1.2rem); margin: 14px 0 34px; letter-spacing: 1px; }
+.faisceaux span:nth-child(1) { transform: translateX(-50%) rotate(-34deg); }
+.faisceaux span:nth-child(2) { transform: translateX(-50%) rotate(-16deg); background: linear-gradient(180deg, rgba(126, 58, 242, 0.26), transparent 62%); }
+.faisceaux span:nth-child(3) { transform: translateX(-50%) rotate(0deg); }
+.faisceaux span:nth-child(4) { transform: translateX(-50%) rotate(16deg); background: linear-gradient(180deg, rgba(126, 58, 242, 0.26), transparent 62%); }
+.faisceaux span:nth-child(5) { transform: translateX(-50%) rotate(34deg); }
+
+.rubans {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 40% at 20% 78%, rgba(47, 107, 255, 0.4), transparent 60%),
+    radial-gradient(52% 36% at 82% 82%, rgba(126, 58, 242, 0.38), transparent 62%);
+  filter: blur(6px);
+}
+
+.hero { position: relative; z-index: 2; text-align: center; }
+
+.ligne-haut { margin: 0; }
+.mot-argent { font-size: clamp(3.4rem, 13vw, 9rem); line-height: 0.9; }
+
+.ligne-milieu {
+  margin: -0.05em 0 -0.15em;
+  font-family: var(--font-titre);
+  font-weight: 300;
+  text-transform: lowercase;
+  letter-spacing: 4px;
+  font-size: clamp(1.1rem, 4vw, 2.4rem);
+  color: #eef3ff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.ligne-bas { margin: 0; }
+.mot-script { font-size: clamp(4.4rem, 20vw, 13rem); line-height: 0.9; }
+
+.slogan {
+  color: var(--texte-doux);
+  font-family: var(--font-titre);
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: clamp(0.8rem, 2.2vw, 1.05rem);
+  margin: 22px 0 36px;
+}
+
 .actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 .actions .btn { text-decoration: none; }
-.note { color: var(--texte-doux); font-size: 0.9rem; margin-top: 34px; max-width: 440px; margin-left: auto; margin-right: auto; }
-
-/* Anneaux concentriques lumineux façon plateau TV */
-.anneaux { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; }
-.anneaux span {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(120, 190, 32, 0.16);
-  box-shadow: 0 0 60px rgba(120, 190, 32, 0.06) inset;
-  animation: respire 7s ease-in-out infinite;
-}
-.anneaux span:nth-child(1) { width: 340px; height: 340px; }
-.anneaux span:nth-child(2) { width: 560px; height: 560px; animation-delay: 0.6s; border-color: rgba(237, 200, 115, 0.12); }
-.anneaux span:nth-child(3) { width: 800px; height: 800px; animation-delay: 1.2s; }
-.anneaux span:nth-child(4) { width: 1080px; height: 1080px; animation-delay: 1.8s; border-color: rgba(46, 158, 91, 0.12); }
-@keyframes respire { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.04); opacity: 1; } }
 </style>
