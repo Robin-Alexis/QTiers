@@ -28,27 +28,26 @@ const critique = computed(() => props.remaining <= 5)
 </script>
 
 <style scoped>
-.timer { position: relative; width: 110px; height: 110px; }
+.timer { position: relative; width: 96px; height: 96px; flex: none; }
 svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-.piste { fill: none; stroke: rgba(150, 185, 255, 0.14); stroke-width: 8; }
+.piste { fill: none; stroke: var(--bleu); stroke-width: 9; }
 .jauge {
   fill: none;
   stroke: var(--or);
-  stroke-width: 8;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.2s linear, stroke 0.3s ease;
-  filter: drop-shadow(0 0 6px rgba(255, 207, 71, 0.6));
+  stroke-width: 9;
+  stroke-linecap: butt;
+  transition: stroke-dashoffset 0.2s linear, stroke 0.2s ease;
 }
-.timer.critique .jauge { stroke: var(--rouge); filter: drop-shadow(0 0 8px rgba(255, 77, 85, 0.7)); }
+.timer.critique .jauge { stroke: var(--rouge); }
 .valeur {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
-  font-family: var(--font-titre);
-  font-size: 2.1rem;
-  color: #fff;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--creme);
 }
-.timer.critique .valeur { color: #ffb3b3; animation: pulse 0.6s infinite; }
-@keyframes pulse { 50% { transform: scale(1.14); } }
+.timer.critique .valeur { color: var(--rouge); }
 </style>

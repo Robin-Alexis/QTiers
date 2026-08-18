@@ -34,7 +34,7 @@
         <label>Réponses <small>(coche la bonne)</small></label>
         <div v-for="(rep, i) in form.reponses" :key="i" class="rep-ligne">
           <input type="radio" :value="i" v-model="form.bonne" :id="'b' + i" class="radio" />
-          <span class="pastille" :class="{ ok: form.bonne === i }">{{ LETTRES[i] }}</span>
+          <span class="tuile" :class="{ ok: form.bonne === i }">{{ LETTRES[i] }}</span>
           <input v-model="form.reponses[i]" class="champ" :placeholder="'Réponse ' + LETTRES[i]" />
         </div>
 
@@ -45,13 +45,14 @@
           <button class="btn btn--or" :disabled="enCours" @click="enregistrer">
             {{ form.id ? 'Enregistrer' : 'Ajouter' }}
           </button>
-          <button v-if="form.id" class="btn btn--ghost" @click="reinitialiser">Annuler</button>
+          <button v-if="form.id" class="btn btn--bleu" @click="reinitialiser">Annuler</button>
         </div>
       </section>
 
       <section class="liste">
         <div class="liste-tete">
-          <h2 class="titre-or">Questions <span class="badge">{{ questions.length }}</span></h2>
+          <h2 class="titre">Questions</h2>
+          <span class="total">{{ questions.length }}</span>
         </div>
 
         <p v-if="chargement" class="muted">Chargement…</p>
@@ -59,7 +60,7 @@
 
         <article v-for="q in questions" :key="q.id" class="carte panneau">
           <div class="carte-tete">
-            <span class="badge">{{ q.categorie }}</span>
+            <span class="cat">{{ q.categorie }}</span>
             <span class="muted diff">{{ q.difficulte }}</span>
           </div>
           <p class="q-texte">{{ q.question }}</p>
@@ -69,7 +70,7 @@
             </li>
           </ul>
           <div class="carte-actions">
-            <button class="btn btn--ghost btn--sm" @click="editer(q)">Modifier</button>
+            <button class="btn btn--bleu btn--sm" @click="editer(q)">Modifier</button>
             <button class="btn btn--danger btn--sm" @click="supprimer(q)">Supprimer</button>
           </div>
         </article>
@@ -171,47 +172,46 @@ onMounted(charger)
 
 <style scoped>
 .admin { min-height: 100vh; }
-.barre { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+.barre { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 26px; }
 .barre .btn { text-decoration: none; }
-.logo-mini {
-  font-family: var(--font-titre);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  font-size: 1rem;
-  color: var(--bleu-clair);
-}
+.logo-mini { font-family: var(--font); font-weight: 700; letter-spacing: 0.5px; color: var(--creme); }
 
-.grille { display: grid; grid-template-columns: minmax(320px, 420px) 1fr; gap: 22px; align-items: start; }
+.grille { display: grid; grid-template-columns: minmax(320px, 400px) 1fr; gap: 22px; align-items: start; }
 @media (max-width: 860px) { .grille { grid-template-columns: 1fr; } }
 
 .form { padding: 22px; position: sticky; top: 16px; display: flex; flex-direction: column; gap: 10px; }
-.form h2 { margin-bottom: 6px; }
+.form h2 { margin-bottom: 6px; font-weight: 700; font-size: 1.3rem; color: var(--creme); }
 .ligne { display: flex; gap: 12px; }
 .col { flex: 1; display: flex; flex-direction: column; gap: 4px; }
 .col--court { flex: 0 0 130px; }
-textarea.champ { resize: vertical; font-family: var(--font-texte); }
+textarea.champ { resize: vertical; font-family: var(--font); }
 
 .rep-ligne { display: flex; align-items: center; gap: 10px; }
 .radio { accent-color: var(--or); width: 18px; height: 18px; flex: none; }
-.pastille {
+.tuile {
   flex: none; width: 30px; height: 30px; display: grid; place-items: center;
-  border-radius: 50%; font-family: var(--font-titre); font-weight: 600; background: rgba(255, 255, 255, 0.08); color: var(--texte-doux);
+  border-radius: 3px; font-family: var(--font); font-weight: 700; background: var(--bleu-vif); color: var(--creme);
 }
-.pastille.ok { background: linear-gradient(180deg, var(--or-clair), var(--or)); color: #2a1c02; }
+.tuile.ok { background: var(--or); color: var(--encre); }
 
 .actions { display: flex; gap: 12px; margin-top: 6px; }
 .erreur { color: #ffb3b3; margin: 2px 0; }
-.succes { color: var(--or-clair); margin: 2px 0; }
+.succes { color: var(--or); font-weight: 700; margin: 2px 0; }
 
-.liste-tete h2 { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-.muted { color: var(--texte-doux); }
-.carte { padding: 16px 18px; margin-bottom: 14px; }
+.liste-tete { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.liste-tete .titre { font-weight: 700; font-size: 1.3rem; color: var(--creme); }
+.total { font-weight: 700; color: var(--encre); background: var(--or); border-radius: 3px; padding: 1px 10px; font-size: 0.9rem; }
+.muted { color: var(--sourd); }
+.carte { padding: 16px 18px; margin-bottom: 12px; border-left: 4px solid var(--bleu-vif); }
 .carte-tete { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.cat { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.76rem; color: var(--or); }
 .diff { text-transform: capitalize; font-size: 0.82rem; }
-.q-texte { font-family: var(--font-titre); font-size: 1.15rem; margin: 0 0 10px; }
+.q-texte { font-weight: 700; font-size: 1.1rem; margin: 0 0 10px; color: var(--creme); }
 .q-reps { list-style: none; padding: 0; margin: 0 0 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 14px; }
-.q-reps li { color: var(--texte-doux); font-size: 0.92rem; }
-.q-reps li.bonne { color: var(--or-clair); font-weight: 600; }
+.q-reps li { color: var(--sourd); font-size: 0.92rem; }
+.q-reps li b { color: var(--creme); }
+.q-reps li.bonne { color: var(--or); font-weight: 700; }
+.q-reps li.bonne b { color: var(--or); }
 @media (max-width: 520px) { .q-reps { grid-template-columns: 1fr; } }
 .carte-actions { display: flex; gap: 10px; }
 </style>

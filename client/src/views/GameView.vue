@@ -1,65 +1,66 @@
 <template>
   <div class="container jeu">
     <header class="barre">
-      <RouterLink to="/" class="btn btn--ghost btn--sm">Accueil</RouterLink>
-      <span class="logo-mini">Question pour un Tiers</span>
-      <button class="btn btn--ghost btn--sm" @click="basculerSon">{{ sonActif ? 'Son on' : 'Son off' }}</button>
+      <RouterLink to="/" class="lien">← Accueil</RouterLink>
+      <span class="marque">Question pour un Tiers</span>
+      <button class="lien" @click="basculerSon">Son&nbsp;{{ sonActif ? 'activé' : 'coupé' }}</button>
     </header>
 
-    <div v-if="etat === 'chargement'" class="centre panneau bloc">
+    <div v-if="etat === 'chargement'" class="bloc panneau">
       <p>Chargement des questions…</p>
     </div>
 
-    <div v-else-if="etat === 'vide'" class="centre panneau bloc">
-      <h2 class="titre-or">Aucune question</h2>
+    <div v-else-if="etat === 'vide'" class="bloc panneau panneau--or">
+      <h2 class="titre">Aucune question</h2>
       <p>La base est vide. Ajoute des questions pour lancer une partie.</p>
       <RouterLink to="/admin" class="btn btn--or">Ajouter des questions</RouterLink>
     </div>
 
-    <div v-else-if="etat === 'pret'" class="centre panneau bloc">
-      <span class="badge">{{ questions.length }} questions · {{ DUREE }}s chacune</span>
-      <h2 class="titre-or gros">Prêt&nbsp;?</h2>
+    <div v-else-if="etat === 'pret'" class="bloc panneau panneau--or">
+      <p class="sur">{{ questions.length }} questions · {{ DUREE }} secondes chacune</p>
+      <h2 class="titre gros">Prêt&nbsp;?</h2>
       <p>Une bonne réponse rapporte d'autant plus de points que tu réponds vite. À toi de jouer&nbsp;!</p>
       <button class="btn btn--or" @click="demarrer">C'est parti</button>
     </div>
 
     <div v-else-if="etat === 'jeu'" class="plateau">
       <div class="hud">
-        <div class="hud__gauche">
-          <span class="badge">Question {{ index + 1 }} / {{ questions.length }}</span>
-          <span class="badge badge--or">{{ questionCourante.categorie }}</span>
+        <div class="compteur">
+          <span class="num">{{ String(index + 1).padStart(2, '0') }}</span>
+          <span class="tot">/ {{ String(questions.length).padStart(2, '0') }}</span>
         </div>
-        <div class="score">Score <strong>{{ score }}</strong></div>
+        <div class="categorie">{{ questionCourante.categorie }}</div>
+        <div class="score">Score <b>{{ score }}</b></div>
       </div>
 
       <div class="scene">
+        <div class="question">{{ questionCourante.question }}</div>
         <CircleTimer :total="DUREE" :remaining="tempsRestant" />
-        <div class="question panneau">{{ questionCourante.question }}</div>
       </div>
 
       <div class="reponses">
         <button
           v-for="(prop, i) in propositions"
           :key="i"
-          class="reponse"
+          class="option"
           :class="classeReponse(i)"
           :disabled="revele"
           @click="repondre(i)"
         >
-          <span class="lettre">{{ LETTRES[i] }}</span>
-          <span class="texte">{{ prop.text }}</span>
+          <span class="tuile">{{ LETTRES[i] }}</span>
+          <span class="lib">{{ prop.text }}</span>
         </button>
       </div>
     </div>
 
-    <div v-else-if="etat === 'resultat'" class="centre panneau bloc">
-      <span class="badge">Terminé</span>
-      <h2 class="titre-or gros">{{ mention }}</h2>
+    <div v-else-if="etat === 'resultat'" class="bloc panneau panneau--or">
+      <p class="sur">Partie terminée</p>
+      <h2 class="titre gros">{{ mention }}</h2>
       <div class="score-final">{{ score }} <small>points</small></div>
       <p>{{ bonnes }} / {{ questions.length }} bonnes réponses</p>
       <div class="actions">
         <button class="btn btn--or" @click="rejouer">Rejouer</button>
-        <RouterLink to="/" class="btn btn--ghost">Accueil</RouterLink>
+        <RouterLink to="/" class="btn btn--bleu">Accueil</RouterLink>
       </div>
     </div>
   </div>
@@ -208,74 +209,99 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .jeu { min-height: 100vh; }
-.barre { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
-.barre .btn { text-decoration: none; }
-.logo-mini {
-  font-family: var(--font-titre);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  font-size: 1rem;
-  color: var(--bleu-clair);
+
+.barre { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 26px; }
+.lien {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--sourd);
+  text-decoration: none;
+  padding: 0;
 }
+.lien:hover { color: var(--creme); }
+.marque { font-family: var(--font); font-weight: 700; letter-spacing: 0.5px; color: var(--creme); }
 
-.centre { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.bloc { padding: 40px 28px; margin: 8vh auto 0; max-width: 560px; }
-.bloc .btn { text-decoration: none; }
-.gros { font-size: clamp(2.4rem, 8vw, 4rem); }
+.bloc { padding: 40px 34px; margin: 7vh auto 0; max-width: 560px; text-align: center; }
+.bloc .btn { text-decoration: none; display: inline-block; margin-top: 8px; }
+.bloc .actions { margin-top: 16px; }
+.sur { color: var(--sourd); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.78rem; margin: 0 0 8px; }
+.titre { font-weight: 700; font-size: 1.9rem; margin-bottom: 10px; color: var(--creme); }
+.gros { font-size: clamp(2.2rem, 7vw, 3.4rem); }
 
-.hud { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
-.hud__gauche { display: flex; gap: 10px; flex-wrap: wrap; }
-.score { font-family: var(--font-titre); text-transform: uppercase; letter-spacing: 1px; color: var(--texte-doux); }
-.score strong { color: var(--or); font-size: 1.5rem; margin-left: 6px; }
+.hud {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  border-bottom: 2px solid var(--bleu);
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+}
+.compteur { display: flex; align-items: baseline; gap: 6px; }
+.compteur .num { font-family: var(--font); font-weight: 700; font-size: 2rem; color: var(--or); line-height: 1; }
+.compteur .tot { color: var(--sourd); font-weight: 700; }
+.categorie { font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.82rem; color: var(--creme); }
+.score { margin-left: auto; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; font-weight: 700; color: var(--sourd); }
+.score b { color: var(--or); font-size: 1.4rem; margin-left: 6px; }
 
 .scene { display: flex; align-items: center; gap: 22px; margin-bottom: 26px; }
 .question {
   flex: 1;
-  padding: 26px 28px;
-  font-family: var(--font-titre);
-  font-weight: 500;
-  font-size: clamp(1.3rem, 3.2vw, 2rem);
-  line-height: 1.2;
+  background: var(--bleu-fonce);
+  border-left: 6px solid var(--or);
+  border-radius: 0 4px 4px 0;
+  padding: 24px 26px;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 3vw, 1.85rem);
+  line-height: 1.25;
+  color: var(--creme);
 }
-@media (max-width: 620px) { .scene { flex-direction: column; } }
+@media (max-width: 640px) { .scene { flex-direction: column-reverse; } }
 
-.reponses { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-@media (max-width: 620px) { .reponses { grid-template-columns: 1fr; } }
+.reponses { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 640px) { .reponses { grid-template-columns: 1fr; } }
 
-.reponse {
+.option {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  align-items: stretch;
   text-align: left;
-  padding: 16px 18px;
-  border-radius: 12px;
-  border: 1px solid var(--bord);
-  background: rgba(8, 18, 54, 0.72);
-  color: var(--blanc);
-  font-size: 1.05rem;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bleu-fonce);
+  color: var(--creme);
   cursor: pointer;
-  transition: transform 0.12s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+  transition: background 0.15s;
 }
-.reponse:not(:disabled):hover { transform: translateY(-2px); border-color: var(--bleu-vif); box-shadow: var(--lueur-bleue); }
-.reponse:disabled { cursor: default; }
-.lettre {
+.option:not(:disabled):hover { background: var(--bleu); }
+.option:not(:disabled):hover .tuile { background: var(--or); color: var(--encre); }
+.option:disabled { cursor: default; }
+.tuile {
   flex: none;
-  width: 38px; height: 38px;
-  display: grid; place-items: center;
-  border-radius: 50%;
-  font-family: var(--font-titre);
-  font-weight: 600;
-  font-size: 1.2rem;
-  background: linear-gradient(180deg, var(--or-clair), var(--or));
-  color: #2a1c02;
+  width: 54px;
+  display: grid;
+  place-items: center;
+  background: var(--bleu-vif);
+  color: var(--or);
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 1.5rem;
+  transition: background 0.15s, color 0.15s;
 }
-.reponse--bonne { border-color: var(--or); background: rgba(255, 207, 71, 0.18); box-shadow: 0 0 26px rgba(255, 207, 71, 0.4); }
-.reponse--bonne .lettre { background: linear-gradient(180deg, #fff2c2, var(--or)); color: #2a1c02; }
-.reponse--mauvaise { border-color: var(--rouge); background: rgba(255, 77, 85, 0.2); }
-.reponse--mauvaise .lettre { background: linear-gradient(180deg, #ff9a9c, var(--rouge)); color: #fff; }
-.reponse--eteinte { opacity: 0.45; }
+.lib { padding: 15px 16px; font-size: 1.05rem; align-self: center; }
 
-.score-final { font-family: var(--font-titre); font-weight: 700; font-size: 4rem; color: var(--or); line-height: 1; }
-.score-final small { font-size: 1.2rem; color: var(--texte-doux); }
-.actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.option--bonne { background: var(--or); }
+.option--bonne .tuile { background: var(--encre); color: var(--or); }
+.option--bonne .lib { color: var(--encre); font-weight: 700; }
+.option--mauvaise { background: var(--rouge); }
+.option--mauvaise .tuile { background: var(--rouge-fonce); color: var(--blanc); }
+.option--mauvaise .lib { color: var(--blanc); }
+.option--eteinte { opacity: 0.4; }
+
+.score-final { font-weight: 700; font-size: 4rem; color: var(--or); line-height: 1; margin: 6px 0; }
+.score-final small { font-size: 1.1rem; color: var(--sourd); font-weight: 400; }
+.actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 </style>
