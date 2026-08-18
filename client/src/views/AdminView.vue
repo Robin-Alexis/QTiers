@@ -202,7 +202,7 @@ textarea.champ { resize: vertical; font-family: var(--font); }
 .liste-tete .titre { font-weight: 700; font-size: 1.3rem; color: var(--creme); }
 .total { font-weight: 700; color: var(--encre); background: var(--or); border-radius: 3px; padding: 1px 10px; font-size: 0.9rem; }
 .muted { color: var(--sourd); }
-.carte { padding: 16px 18px; margin-bottom: 12px; border-left: 4px solid var(--bleu-vif); }
+.carte { padding: 16px 18px; margin-bottom: 12px; }
 .carte-tete { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .cat { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.76rem; color: var(--or); }
 .diff { text-transform: capitalize; font-size: 0.82rem; }

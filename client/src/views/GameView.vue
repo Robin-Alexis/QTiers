@@ -250,7 +250,6 @@ onBeforeUnmount(() => {
 .question {
   flex: 1;
   background: var(--bleu-fonce);
-  border-left: 6px solid var(--or);
   border-radius: 0 4px 4px 0;
   padding: 24px 26px;
   font-weight: 700;
