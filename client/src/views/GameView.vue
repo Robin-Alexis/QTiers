@@ -2,8 +2,10 @@
   <div class="container jeu">
     <header class="barre">
       <RouterLink to="/" class="lien">← Accueil</RouterLink>
-      <span class="marque">Question pour un Tiers</span>
-      <button class="lien" @click="basculerSon">Son&nbsp;{{ sonActif ? 'activé' : 'coupé' }}</button>
+      <span class="marque"><span class="chrome">Question pour un Tiers</span></span>
+      <button class="lien lien--son" :class="{ 'lien--actif': sonActif }" @click="basculerSon">
+        <span class="point"></span>Son
+      </button>
     </header>
 
     <div v-if="etat === 'chargement'" class="bloc panneau">
@@ -210,19 +212,9 @@ onBeforeUnmount(() => {
 <style scoped>
 .jeu { min-height: 100vh; }
 
-.barre { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 26px; }
-.lien {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: var(--font);
-  font-size: 0.9rem;
-  color: var(--sourd);
-  text-decoration: none;
-  padding: 0;
-}
-.lien:hover { color: var(--creme); }
-.marque { font-family: var(--font); font-weight: 700; letter-spacing: 0.5px; color: var(--creme); }
+.barre { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 30px; }
+.marque { min-width: 0; text-align: center; }
+.marque .chrome { font-size: clamp(0.95rem, 2.7vw, 1.5rem); white-space: nowrap; }
 
 .bloc { padding: 40px 34px; margin: 7vh auto 0; max-width: 560px; text-align: center; }
 .bloc .btn { text-decoration: none; display: inline-block; margin-top: 8px; }

@@ -1,9 +1,9 @@
 <template>
   <div class="container admin">
     <header class="barre">
-      <RouterLink to="/" class="btn btn--ghost btn--sm">Accueil</RouterLink>
-      <span class="logo-mini">Gestion des questions</span>
-      <RouterLink to="/jouer" class="btn btn--ghost btn--sm">Jouer</RouterLink>
+      <RouterLink to="/" class="lien">← Accueil</RouterLink>
+      <span class="marque"><span class="chrome">Gestion des questions</span></span>
+      <RouterLink to="/jouer" class="lien">Jouer →</RouterLink>
     </header>
 
     <div class="grille">
@@ -172,9 +172,9 @@ onMounted(charger)
 
 <style scoped>
 .admin { min-height: 100vh; }
-.barre { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 26px; }
-.barre .btn { text-decoration: none; }
-.logo-mini { font-family: var(--font); font-weight: 700; letter-spacing: 0.5px; color: var(--creme); }
+.barre { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 30px; }
+.marque { min-width: 0; text-align: center; }
+.marque .chrome { font-size: clamp(0.95rem, 2.7vw, 1.5rem); white-space: nowrap; }
 
 .grille { display: grid; grid-template-columns: minmax(320px, 400px) 1fr; gap: 22px; align-items: start; }
 @media (max-width: 860px) { .grille { grid-template-columns: 1fr; } }
